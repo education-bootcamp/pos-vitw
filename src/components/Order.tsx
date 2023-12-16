@@ -129,7 +129,7 @@ function Order() {
                         <div className="bottom-context" style={bottomContext}>
                             <div className="total-outer">
                                 <h1 style={totalText}>
-                                    Total : 2550.00
+                                    Total : 2550.00 
                                 </h1>
                             </div>
                             <div className="place-order-button-context">
