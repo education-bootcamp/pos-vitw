@@ -47,11 +47,11 @@ const Customer:React.FC = ()=>{
         setCustomers(response.data);
     }
 
-    const deleteCustomer= async (id)=>{
+    const deleteCustomer= async (id: string)=>{
         await axios.delete('http://localhost:3000/api/v1/customers/delete-by-id/'+id);
     }
 
-    const loadModal= async (id)=>{
+    const loadModal= async (id: string)=>{
         const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
         console.log(customer.data)
         setSelectedCustomerId(customer.data._id)
