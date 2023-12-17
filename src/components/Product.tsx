@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, {ChangeEvent, useState} from "react";
+
 
 interface Product{
     _id:string,
@@ -11,7 +12,9 @@ interface Product{
 
 const Product:React.FC = ()=>{
 
-    const [products, setProducts]=useState<Product[]>([])
+    const [products, setProducts]=useState<Product[]>([]);
+    const [image, setImage]=useState<File | null>(null);
+
 
 
 
@@ -20,6 +23,23 @@ const Product:React.FC = ()=>{
     const [unitPrice,setUnitPrice]=useState<number | ''>('');
     const [qtyOnHand,setQtyOnHand]=useState<number | ''>('');
 
+
+    const handleImageChange = (e:ChangeEvent<HTMLInputElement>)=>{
+        if(e.target.files && e.target.files[0]){
+            setImage(e.target.files[0]);
+        }
+    }
+
+    const saveProduct=()=>{
+        /*if(image){
+            const ref = ref(storage, `images/${Math.random()+'-'+image.name}`)
+            ref.put(image).then(()=>{
+                storageRef.getDownloadURL().then((url)=>{
+                    console.log(url);
+                });
+            })
+        }*/
+    }
 
 
     const styleObj:React.CSSProperties={
@@ -53,7 +73,8 @@ const Product:React.FC = ()=>{
                     <div className="col-12 col-sm-6 col-md-4" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="image">Product Image</label>
-                            <input type="file" className='form-control' id='image'/>
+                            <input onChange={handleImageChange}
+                                   type="file" className='form-control' id='image'/>
                         </div>
                     </div>
                     <div className="col-12">
@@ -67,7 +88,7 @@ const Product:React.FC = ()=>{
                 <br/>
                 <div className="row">
                     <div className="col-12">
-                        <button className='btn btn-primary col-12'>Save Product</button>
+                        <button className='btn btn-primary col-12' onClick={saveProduct}>Save Product</button>
                     </div>
                 </div>
                 <hr/>
