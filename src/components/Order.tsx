@@ -41,12 +41,14 @@ const Order:React.FC = ()=>{
     const [description,setDescription]=useState('');
     const [unitPrice,setUnitPrice]=useState<number | ''>('');
     const [qtyOnHand,setQtyOnHand]=useState<number | ''>('');
+    const [netTotal,setNetTotal]=useState<number>(0);
 
 
     useEffect(()=>{
         findAllCustomers();
         findAllProducts();
     }, []);
+
 
     const findAllCustomers= async ()=>{
         const response = await axios.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
@@ -60,14 +62,14 @@ const Order:React.FC = ()=>{
 
     const getCustomerById= async (id:string)=>{
         const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
-        setSelectedCustomer(customer);
+        setSelectedCustomer(customer.data);
         setAddress(customer.data.address)
         setSalary(parseFloat(customer.data.salary))
     }
 
     const getProductById= async (id:string)=>{
         const product = await axios.get('http://localhost:3000/api/v1/products/find-by-id/'+id);
-        setSelectedProduct(product);
+        setSelectedProduct(product.data);
         setName(product.data.name);
         setDescription(product.data.description);
         setQtyOnHand(product.data.qtyOnHand);
@@ -75,7 +77,7 @@ const Order:React.FC = ()=>{
 
     }
 
-    const addToCart=(newItem:Cart)=>{
+    const addToCart= async (newItem:Cart)=>{
         setCart((prevState)=>[...prevState,newItem]);
     }
 
@@ -160,7 +162,7 @@ const Order:React.FC = ()=>{
                         <button className='btn btn-primary col-12' onClick={()=>{
 
                             const cartProduct:Cart= {
-                                _id:selectedProduct?._id,
+                                _id:selectedProduct._id,
                                 description:description,
                                 unitPrice:unitPrice,
                                 qty:userQty,
@@ -197,7 +199,8 @@ const Order:React.FC = ()=>{
                                     <td>
                                         <button
                                             onClick={(e)=>{
-                                                // for
+
+                                                setCart((prevState)=>prevState.filter((cartData)=>cartData._id!==data._id));
                                             }}
                                             className='btn btn-outline-danger btn-sm'>Remove</button>
                                     </td>
@@ -213,11 +216,19 @@ const Order:React.FC = ()=>{
                         <div className="bottom-context" style={bottomContext}>
                             <div className="total-outer">
                                 <h1 style={totalText}>
-                                    Total : 2550.00 
+                                    Total : {netTotal}
                                 </h1>
                             </div>
                             <div className="place-order-button-context">
-                                <button className='btn btn-primary'>Place Order</button>
+                                <button className='btn btn-primary' onClick={async ()=>{
+
+                                    await axios.post('http://localhost:3000/api/v1/orders/create/',{
+                                        date:new Date(),
+                                        customerDetails:selectedCustomer,
+                                        totalCost:130,
+                                        products:cart
+                                    });
+                                }}>Place Order</button>
                             </div>
                         </div>
 
