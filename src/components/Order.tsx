@@ -4,11 +4,11 @@ import axios from "axios";
 import Product from "./Product.tsx";
 
 interface Cart{
-    _id:string,
-    description:string,
-    unitPrice:number,
-    qty:number,
-    total:number
+    _id:string | undefined,
+    description:string| undefined,
+    unitPrice:number| '',
+    qty:number| undefined,
+    total:number| undefined
 }
 
 const Order:React.FC = ()=>{
@@ -33,7 +33,11 @@ const Order:React.FC = ()=>{
     const [address,setAddress]=useState('');
     const [salary,setSalary]=useState<number | ''>('');
 
+    const [selectedCustomer,setSelectedCustomer] = useState<Customer | null>(null);
+    const [selectedProduct,setSelectedProduct] = useState<Product | null>(null);
+
     const [name,setName]=useState('');
+    const [userQty,setUserQty]=useState<number>(0);
     const [description,setDescription]=useState('');
     const [unitPrice,setUnitPrice]=useState<number | ''>('');
     const [qtyOnHand,setQtyOnHand]=useState<number | ''>('');
@@ -56,18 +60,23 @@ const Order:React.FC = ()=>{
 
     const getCustomerById= async (id:string)=>{
         const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
+        setSelectedCustomer(customer);
         setAddress(customer.data.address)
         setSalary(parseFloat(customer.data.salary))
     }
 
     const getProductById= async (id:string)=>{
         const product = await axios.get('http://localhost:3000/api/v1/products/find-by-id/'+id);
-
+        setSelectedProduct(product);
         setName(product.data.name);
         setDescription(product.data.description);
         setQtyOnHand(product.data.qtyOnHand);
         setUnitPrice(product.data.unitPrice);
 
+    }
+
+    const addToCart=(newItem:Cart)=>{
+        setCart((prevState)=>[...prevState,newItem]);
     }
 
     return (
@@ -123,7 +132,7 @@ const Order:React.FC = ()=>{
                     <div className="col-12 col-sm-6 col-md-3" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="description">Product Description</label>
-                            <input value={name} type="text" disabled className='form-control' id='description'/>
+                            <input value={description} type="text" disabled className='form-control' id='description'/>
                         </div>
                     </div>
                     <div className="col-12 col-sm-6 col-md-2" style={styleObj}>
@@ -141,7 +150,7 @@ const Order:React.FC = ()=>{
                     <div className="col-12 col-sm-6 col-md-2" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="qty">QTY</label>
-                            <input type="number" className='form-control' id='qty'/>
+                            <input onChange={(e)=>{setUserQty(parseFloat(e.target.value))}} type="number" className='form-control' id='qty'/>
                         </div>
                     </div>
                 </div>
@@ -150,6 +159,14 @@ const Order:React.FC = ()=>{
                     <div className="col-12">
                         <button className='btn btn-primary col-12' onClick={()=>{
 
+                            const cartProduct:Cart= {
+                                _id:selectedProduct?._id,
+                                description:description,
+                                unitPrice:unitPrice,
+                                qty:userQty,
+                                total:(userQty*(unitPrice?unitPrice:0))
+                            }
+                            addToCart(cartProduct);
                         }}>+ Add Product</button>
                     </div>
                 </div>
@@ -178,7 +195,11 @@ const Order:React.FC = ()=>{
                                     <td>{data.qty}</td>
                                     <td>{data.total}</td>
                                     <td>
-                                        <button className='btn btn-outline-danger btn-sm'>Remove</button>
+                                        <button
+                                            onClick={(e)=>{
+                                                // for
+                                            }}
+                                            className='btn btn-outline-danger btn-sm'>Remove</button>
                                     </td>
                                 </tr>
                             ))}
