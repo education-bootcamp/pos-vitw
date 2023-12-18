@@ -165,7 +165,7 @@ const Product:React.FC = ()=>{
                             </thead>
                             <tbody>
                             {products.map((product, index)=>
-                            <tr>
+                            <tr key={index}>
                                 <td>#{index}</td>
                                 <td>{product.name}</td>
                                 <td>{product.qtyOnHand}</td>
