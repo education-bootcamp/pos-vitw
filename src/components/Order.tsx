@@ -3,6 +3,14 @@ import Customer from "./Customer.tsx";
 import axios from "axios";
 import Product from "./Product.tsx";
 
+interface Cart{
+    _id:string,
+    description:string,
+    unitPrice:number,
+    qty:number,
+    total:number
+}
+
 const Order:React.FC = ()=>{
     const styleObj:React.CSSProperties={
         marginBottom:'20px'
@@ -20,6 +28,7 @@ const Order:React.FC = ()=>{
 
     const [customers, setCustomers]=useState<Customer[]>([]);
     const [products, setProducts]=useState<Product[]>([]);
+    const [cart, setCart]=useState<Cart[]>([]);
 
     const [address,setAddress]=useState('');
     const [salary,setSalary]=useState<number | ''>('');
@@ -139,7 +148,9 @@ const Order:React.FC = ()=>{
                 <hr/>
                 <div className="row">
                     <div className="col-12">
-                        <button className='btn btn-primary col-12'>+ Add Product</button>
+                        <button className='btn btn-primary col-12' onClick={()=>{
+
+                        }}>+ Add Product</button>
                     </div>
                 </div>
 
@@ -159,16 +170,19 @@ const Order:React.FC = ()=>{
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
-                                <td>#1001</td>
-                                <td>Product 1</td>
-                                <td>240.00</td>
-                                <td>20</td>
-                                <td>25000.00</td>
-                                <td>
-                                    <button className='btn btn-outline-danger btn-sm'>Remove</button>
-                                </td>
-                            </tr>
+                            {cart.map((data, index)=>(
+                                <tr key={index}>
+                                    <td>#{data._id}</td>
+                                    <td>{data.description}</td>
+                                    <td>{data.unitPrice}</td>
+                                    <td>{data.qty}</td>
+                                    <td>{data.total}</td>
+                                    <td>
+                                        <button className='btn btn-outline-danger btn-sm'>Remove</button>
+                                    </td>
+                                </tr>
+                            ))}
+
 
                             </tbody>
                         </table>
