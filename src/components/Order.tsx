@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 import Customer from "./Customer.tsx";
 import axios from "axios";
+import Product from "./Product.tsx";
 
 const Order:React.FC = ()=>{
     const styleObj:React.CSSProperties={
@@ -17,16 +18,47 @@ const Order:React.FC = ()=>{
         margin:'0'
     }
 
-    const [customers, setCustomers]=useState<Customer[]>([])
+    const [customers, setCustomers]=useState<Customer[]>([]);
+    const [products, setProducts]=useState<Product[]>([]);
+
+    const [address,setAddress]=useState('');
+    const [salary,setSalary]=useState<number | ''>('');
+
+    const [name,setName]=useState('');
+    const [description,setDescription]=useState('');
+    const [unitPrice,setUnitPrice]=useState<number | ''>('');
+    const [qtyOnHand,setQtyOnHand]=useState<number | ''>('');
 
 
     useEffect(()=>{
         findAllCustomers();
+        findAllProducts();
     }, []);
 
     const findAllCustomers= async ()=>{
         const response = await axios.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
         setCustomers(response.data);
+    }
+
+    const findAllProducts= async ()=>{
+        const response = await axios.get('http://localhost:3000/api/v1/products/find-all?searchText=&page=1&size=10');
+        setProducts(response.data);
+    }
+
+    const getCustomerById= async (id:string)=>{
+        const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
+        setAddress(customer.data.address)
+        setSalary(parseFloat(customer.data.salary))
+    }
+
+    const getProductById= async (id:string)=>{
+        const product = await axios.get('http://localhost:3000/api/v1/products/find-by-id/'+id);
+
+        setName(product.data.name);
+        setDescription(product.data.description);
+        setQtyOnHand(product.data.qtyOnHand);
+        setUnitPrice(product.data.unitPrice);
+
     }
 
     return (
@@ -39,8 +71,9 @@ const Order:React.FC = ()=>{
                         <div className="form-group">
                             <label htmlFor="customer">Select Customer</label>
                             <select id="customer" className='form-control' onChange={(e)=>{
-                                console.log(e)
+                                getCustomerById(e.target.value)
                             }}>
+                                <option value="">Select Value</option>
                                 {customers.map((customer, index)=>(
                                     <option key={index} value={customer._id}>{customer.name}</option>
                                 ))}
@@ -48,22 +81,17 @@ const Order:React.FC = ()=>{
                             </select>
                         </div>
                     </div>
-                    <div className="col-12 col-sm-6 col-md-3" style={styleObj}>
-                        <div className="form-group">
-                            <label htmlFor="name">Customer Name</label>
-                            <input disabled type="text" className='form-control' id='name'/>
-                        </div>
-                    </div>
+
                     <div className="col-12 col-sm-6 col-md-3" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="address">Customer Address</label>
-                            <input disabled type="text" className='form-control' id='address'/>
+                            <input value={address} disabled type="text" className='form-control' id='address'/>
                         </div>
                     </div>
                     <div className="col-12 col-sm-6 col-md-3" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="salary">Customer Address</label>
-                            <input disabled type="number" className='form-control' id='salary'/>
+                            <input value={salary} disabled type="number" className='form-control' id='salary'/>
                         </div>
                     </div>
                 </div>
@@ -72,29 +100,33 @@ const Order:React.FC = ()=>{
                     <div className="col-12 col-sm-6 col-md-3" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="product">Select Product</label>
-                            <select id="product" className='form-control'>
-                                <option value="Use Options" disabled defaultValue='Use Options'>Use Options</option>
-                                <option value="#">Customer 1</option>
-                                <option value="#">Customer 2</option>
+                            <select id="product" className='form-control' onChange={(e)=>{
+                                getProductById(e.target.value)
+                            }}>
+                                <option value="">Select Value</option>
+                                {products.map((product, index)=>(
+                                    <option key={index} value={product._id}>{product.name}</option>
+                                ))}
+
                             </select>
                         </div>
                     </div>
                     <div className="col-12 col-sm-6 col-md-3" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="description">Product Description</label>
-                            <input type="text" disabled className='form-control' id='description'/>
+                            <input value={name} type="text" disabled className='form-control' id='description'/>
                         </div>
                     </div>
                     <div className="col-12 col-sm-6 col-md-2" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="price">Unit Price</label>
-                            <input type="number" disabled className='form-control' id='price'/>
+                            <input value={unitPrice} type="number" disabled className='form-control' id='price'/>
                         </div>
                     </div>
                     <div className="col-12 col-sm-6 col-md-2" style={styleObj}>
                         <div className="form-group">
                             <label htmlFor="qtyOnHand">QTY On Hand</label>
-                            <input type="number" disabled className='form-control' id='qtyOnHand'/>
+                            <input value={qtyOnHand} type="number" disabled className='form-control' id='qtyOnHand'/>
                         </div>
                     </div>
                     <div className="col-12 col-sm-6 col-md-2" style={styleObj}>
