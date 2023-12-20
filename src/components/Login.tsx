@@ -1,5 +1,6 @@
 import React, {useState} from "react";
 import axios from 'axios';
+import {Link} from "react-router-dom";
 
 
 const Login:React.FC = ()=>{
@@ -39,7 +40,7 @@ const Login:React.FC = ()=>{
                         <button className='btn btn-primary col-12' onClick={login}>Login</button>
                         <br/>
                         <br/>
-                        <a href="" className='btn btn-outline-dark col-12'>Sign up</a>
+                        <Link to="/signup" className='btn btn-outline-dark col-12'>Sign up</Link>
                     </div>
                 </div>
             </div>
