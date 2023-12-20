@@ -51,24 +51,24 @@ const Order:React.FC = ()=>{
 
 
     const findAllCustomers= async ()=>{
-        const response = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('/customers/find-all?searchText=&page=1&size=10');
         setCustomers(response.data);
     }
 
     const findAllProducts= async ()=>{
-        const response = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('/products/find-all?searchText=&page=1&size=10');
         setProducts(response.data);
     }
 
     const getCustomerById= async (id:string)=>{
-        const customer = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
+        const customer = await AxiosInstance.get('/customers/find-by-id/'+id);
         setSelectedCustomer(customer.data);
         setAddress(customer.data.address)
         setSalary(parseFloat(customer.data.salary))
     }
 
     const getProductById= async (id:string)=>{
-        const product = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-by-id/'+id);
+        const product = await AxiosInstance.get('/products/find-by-id/'+id);
         setSelectedProduct(product.data);
         setName(product.data.name);
         setDescription(product.data.description);
@@ -222,7 +222,7 @@ const Order:React.FC = ()=>{
                             <div className="place-order-button-context">
                                 <button className='btn btn-primary' onClick={async ()=>{
 
-                                    await axios.post('http://localhost:3000/api/v1/orders/create/',{
+                                    await AxiosInstance.post('/orders/create/',{
                                         date:new Date(),
                                         customerDetails:selectedCustomer,
                                         totalCost:130,

@@ -11,7 +11,7 @@ const Login:React.FC = ()=>{
 
     const login=async ()=>{
         try{
-            const response = await AxiosInstance.post('http://localhost:3000/api/v1/users/login',{
+            const response = await AxiosInstance.post('/users/login',{
                 email,password
             });
 

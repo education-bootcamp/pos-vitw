@@ -39,7 +39,7 @@ const Product:React.FC = ()=>{
    /* const updateProduct= async ()=>{
         try{
 
-            await axios.put('http://localhost:3000/api/v1/customers/update/'+selectedCustomerId,{
+            await axios.put('/customers/update/'+selectedCustomerId,{
                 name:updateName,address:updateAddress,salary:updateSalary
             });
             setModalState(false);
@@ -51,12 +51,12 @@ const Product:React.FC = ()=>{
     }*/
 
     const findAllProducts= async ()=>{
-        const response = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('/products/find-all?searchText=&page=1&size=10');
         setProducts(response.data);
     }
 
     const deleteProduct= async (id: string)=>{
-        await AxiosInstance.delete('http://localhost:3000/api/v1/products/delete-by-id/'+id);
+        await AxiosInstance.delete('/products/delete-by-id/'+id);
         findAllProducts();
     }
 
@@ -74,7 +74,7 @@ const Product:React.FC = ()=>{
 
 
         try{
-            await AxiosInstance.post('http://localhost:3000/api/v1/products/create',{
+            await AxiosInstance.post('/products/create',{
                 name,description,unitPrice,qtyOnHand,image:imageUrl
             });
             setName('');

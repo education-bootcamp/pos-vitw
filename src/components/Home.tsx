@@ -18,21 +18,21 @@ const  Home:React.FC = ()=>{
         findAllCounts();
     }, [])
     const findAllProducts= async ()=>{
-        const response = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-all-min');
+        const response = await AxiosInstance.get('/products/find-all-min');
         setProducts(response.data);
     }
 
     const findAllCounts= async ()=>{
-      const productCount = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-all-count');
+      const productCount = await AxiosInstance.get('/products/find-all-count');
         setProductCount(productCount.data);
 
-        const customerCount = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-count');
+        const customerCount = await AxiosInstance.get('/customers/find-count');
         setCustomerCount(customerCount.data);
 
-        const orderCount = await AxiosInstance.get('http://localhost:3000/api/v1/orders/find-count');
+        const orderCount = await AxiosInstance.get('/orders/find-count');
         setOrderCount(orderCount.data);
 
-        const income = await AxiosInstance.get('http://localhost:3000/api/v1/orders/find-income');
+        const income = await AxiosInstance.get('/orders/find-income');
         setIncome(income.data.totalCostSum)
     }
 
