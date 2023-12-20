@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import  {Modal} from "react-bootstrap";
-import axios from 'axios';
+import AxiosInstance from '../config/axiosInstance.ts';
 
 interface Customer{
     _id:string,
@@ -31,7 +31,7 @@ const Customer:React.FC = ()=>{
     const updateCustomer= async ()=>{
         try{
 
-            await axios.put('http://localhost:3000/api/v1/customers/update/'+selectedCustomerId,{
+            await AxiosInstance.put('http://localhost:3000/api/v1/customers/update/'+selectedCustomerId,{
                 name:updateName,address:updateAddress,salary:updateSalary
             });
             setModalState(false);
@@ -43,16 +43,16 @@ const Customer:React.FC = ()=>{
     }
 
     const findAllCustomers= async ()=>{
-        const response = await axios.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
         setCustomers(response.data);
     }
 
     const deleteCustomer= async (id: string)=>{
-        await axios.delete('http://localhost:3000/api/v1/customers/delete-by-id/'+id);
+        await AxiosInstance.delete('http://localhost:3000/api/v1/customers/delete-by-id/'+id);
     }
 
     const loadModal= async (id: string)=>{
-        const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
+        const customer = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
         console.log(customer.data)
         setSelectedCustomerId(customer.data._id)
         setUpdateName(customer.data.name)
@@ -66,7 +66,7 @@ const Customer:React.FC = ()=>{
         
        try{
 
-          const response = await axios.post('http://localhost:3000/api/v1/customers/create',{
+          const response = await AxiosInstance.post('http://localhost:3000/api/v1/customers/create',{
                name,address,salary
            });
            console.log(response);

@@ -1,5 +1,5 @@
 import React, {useState} from "react";
-import axios from 'axios';
+import AxiosInstance from '../config/axiosInstance.ts';
 import {Link} from "react-router-dom";
 
 
@@ -13,7 +13,7 @@ const Signup:React.FC = ()=>{
 
     const signup= async ()=>{
         try{
-            const response = await axios.post('http://localhost:3000/api/v1/users/register',{
+            const response = await AxiosInstance.post('http://localhost:3000/api/v1/users/register',{
                 fullName,email,password
             });
             console.log(response);

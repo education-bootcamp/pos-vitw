@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import Customer from "./Customer.tsx";
-import axios from "axios";
+import AxiosInstance from '../config/axiosInstance.ts';
 import Product from "./Product.tsx";
 
 interface Cart{
@@ -51,24 +51,24 @@ const Order:React.FC = ()=>{
 
 
     const findAllCustomers= async ()=>{
-        const response = await axios.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-all?searchText=&page=1&size=10');
         setCustomers(response.data);
     }
 
     const findAllProducts= async ()=>{
-        const response = await axios.get('http://localhost:3000/api/v1/products/find-all?searchText=&page=1&size=10');
+        const response = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-all?searchText=&page=1&size=10');
         setProducts(response.data);
     }
 
     const getCustomerById= async (id:string)=>{
-        const customer = await axios.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
+        const customer = await AxiosInstance.get('http://localhost:3000/api/v1/customers/find-by-id/'+id);
         setSelectedCustomer(customer.data);
         setAddress(customer.data.address)
         setSalary(parseFloat(customer.data.salary))
     }
 
     const getProductById= async (id:string)=>{
-        const product = await axios.get('http://localhost:3000/api/v1/products/find-by-id/'+id);
+        const product = await AxiosInstance.get('http://localhost:3000/api/v1/products/find-by-id/'+id);
         setSelectedProduct(product.data);
         setName(product.data.name);
         setDescription(product.data.description);
