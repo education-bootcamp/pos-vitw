@@ -7,7 +7,11 @@ const instance:AxiosInstance= axios.create({
 
 instance.interceptors.request.use(
     (config)=>{
-        console.log('interceptor')
+
+        let token = document.cookie.split('; ')
+            .find(record=>record.startsWith('token=')) || null;
+        token = token?.split('=')[1];
+        config.headers.Authorization=token;
         return config;
     },
     (error)=>{return Promise.reject(error)}
