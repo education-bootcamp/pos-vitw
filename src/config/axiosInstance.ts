@@ -1,7 +1,9 @@
 import axios, {AxiosInstance} from "axios";
+import BASE_URL from '../config/ApiConfig.ts';
 
-
-const instance:AxiosInstance= axios.create();
+const instance:AxiosInstance= axios.create({
+    baseURL:BASE_URL
+});
 
 instance.interceptors.request.use(
     (config)=>{
