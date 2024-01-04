@@ -20,4 +20,5 @@ const manageSlice = createSlice({
         },
     }
 });
+export const {increment, decrement} = manageSlice.actions;
 export default manageSlice.reducer;
