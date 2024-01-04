@@ -1,7 +1,9 @@
 import {configureStore} from '@reduxjs/toolkit';
-
+import ManageSlice from './calc/manageSlice';
 export const  store = configureStore({
-    reducer:{}
+    reducer:{
+        calculator:ManageSlice
+    }
 });
 
 export type RootState= ReturnType<typeof store.getState>;
