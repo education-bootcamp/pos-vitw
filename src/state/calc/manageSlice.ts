@@ -11,6 +11,13 @@ const initialState:ManageCalcState={
 const manageSlice = createSlice({
     name:'calculator',
     initialState,
-    reducers:{}
+    reducers:{
+        increment:(state)=>{
+            state.value+=1;
+        },
+        decrement:(state)=>{
+            state.value-=1;
+        },
+    }
 });
 export default manageSlice.reducer;
